@@ -1,7 +1,7 @@
 {
     "properties": {
         "displayName": "Specified port from the Internet should be blocked",
-        "policyType": "BuiltIn",
+        "policyType": "Custom",
         "mode": "All",
         "description": "This policy audits any network security rule that allows a specified port access from Internet",
         "metadata": {
@@ -10,7 +10,7 @@
         },
         "parameters": {
             "effect": {
-                "type": "string",
+                "type": "String",
                 "defaultValue": "Audit",
                 "allowedValues": [
                     "Audit",
@@ -22,7 +22,7 @@
                 }
             },
             "portNumber": {
-                "type": "string",
+                "type": "Integer",
                 "metadata": {
                     "displayName": "TCP/UDP Port Number",
                     "description": "The TCP/UDP Port Number that you wish to audit"
@@ -57,14 +57,14 @@
                                         "equals": "[parameters('portNumber')]"
                                     },
                                     {
-                                        "value": "[if(and(not(empty(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'))), contains(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'),'-')), and(lessOrEquals(int(first(split(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'), '-'))),[parameters('portNumber')]),greaterOrEquals(int(last(split(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'), '-'))),[parameters('portNumber')])), 'false')]",
+                                        "value": "[if(and(not(empty(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'))), contains(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'),'-')), and(lessOrEquals(int(first(split(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'), '-'))),parameters('portNumber')),greaterOrEquals(int(last(split(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRange'), '-'))),parameters('portNumber'))), 'false')]",
                                         "equals": "true"
                                     },
                                     {
                                         "count": {
                                             "field": "Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]",
                                             "where": {
-                                                "value": "[if(and(not(empty(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')))), contains(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')),'-')), and(lessOrEquals(int(first(split(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')), '-'))),[parameters('portNumber')]),greaterOrEquals(int(last(split(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')), '-'))),[parameters('portNumber')])) , 'false')]",
+                                                "value": "[if(and(not(empty(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')))), contains(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')),'-')), and(lessOrEquals(int(first(split(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')), '-'))),parameters('portNumber')),greaterOrEquals(int(last(split(first(field('Microsoft.Network/networkSecurityGroups/securityRules/destinationPortRanges[*]')), '-'))),parameters('portNumber'))) , 'false')]",
                                                 "equals": "true"
                                             }
                                         },
@@ -116,7 +116,5 @@
                 "effect": "[parameters('effect')]"
             }
         }
-    },
-    "id": "/providers/Microsoft.Authorization/policyDefinitions/e372f825-a257-4fb8-9175-797a8a8627d6",
-    "name": "e372f825-a257-4fb8-9175-797a8a8627d6"
+    }
 }
