@@ -16,7 +16,7 @@ even if Microsoft has been advised of the possibility of such damages. */
 {
     "properties": {
         "displayName": "Inherit a tag from the subscription to the resource group",
-        "policyType": "BuiltIn",
+        "policyType": "Custom",
         "mode": "Indexed",
         "description": "Adds or replaces the specified tag and value from the containing subscription when any resource group is created or updated. Existing resource groups can be remediated by triggering a remediation task.",
         "metadata": {
