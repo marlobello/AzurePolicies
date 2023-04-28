@@ -1,0 +1,50 @@
+{
+    "mode": "All",
+    "policyRule": {
+        "if": {
+            "allOf": [
+                {
+                    "field": "type",
+                    "equals": "microsoft.keyvault/vaults"
+                },
+                {
+                    "value": "[if(greaterOrEquals(length(field('name')), 3), substring(field('name'), 0, 3), 'too short to evaluate')]",
+                    "notEquals": "[parameters('Environment')]"
+                }
+            ]
+        },
+        "then": {
+            "effect": "[parameters('Effect')]"
+        }
+    },
+    "parameters": {
+        "Environment": {
+            "type": "String",
+            "metadata": {
+                "description": "Use 3 characters for the environment abbreviation: 'dev' = Dev, 'prd' = Production, 'stg' = Stage, & 'tst' = Test ",
+                "displayName": "Environment Abbreviation"
+            },
+            "allowedValues": [
+                "dev",
+                "prd",
+                "stg",
+                "tst"
+            ]
+        },
+        "Effect": {
+            "type": "String",
+            "metadata": {
+                "description": "Enable or disable the execution of the policy",
+                "displayName": "Effect"
+            },
+            "defaultValue": "Audit",
+            "allowedValues": [
+                "Audit",
+                "audit",
+                "Deny",
+                "deny",
+                "Disabled"
+            ]
+        }
+    }
+}
